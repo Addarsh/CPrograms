@@ -2,7 +2,7 @@
 //insert in a linked list
 #include <stdio.h>
 #include <stdlib.h>
-#include "../LinkedList.h"
+#include "LinkedList.h"
 
 //Prototype function
 void printList(Node* head);
@@ -95,6 +95,18 @@ int Pop(Node** headref){
 	return popkey;	
 }
 
+//Append linked list b to linked list a
+//Make head of linked list b NULL after
+void Append(Node** aref, Node** bref){
+	Node* curr = *aref;
+	while(curr->next){
+		curr = curr->next;
+	}
+	curr->next = *bref;
+	*bref = NULL;
+}
+
+
 //Prints out the linked list 
 void printList(Node* head){
 	while(head){
@@ -115,6 +127,11 @@ int main(int argc,char* argv[]){
 	insertSort(&head);
 	
 	printList(head);	
+	Node* bhead = BuildOneTwoThree();
+	Push(&bhead,82);
+	Append(&head,&bhead);
+	printList(head);
+	printList(bhead);
 	printf("Count = %d\n",count(head));
 	return 0;
 }
