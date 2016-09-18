@@ -13,6 +13,7 @@ void sortedInsert(Node** headref,int key){
 		Push(headref,key);
 		return;
 	}
+
 	Node* newNode = (Node*)malloc(sizeof(Node));
 	newNode->key = key;
 	newNode->next = NULL;
@@ -106,6 +107,46 @@ void Append(Node** aref, Node** bref){
 	*bref = NULL;
 }
 
+//InserNth inserts node at Nth index in the list
+void insertNth(Node** headref,int key, int n){
+	if(*headref == NULL && n != 0) return;
+	if(*headref == NULL || n == 0){
+		Push(headref,key);
+		return;
+	}
+	if(n > Length(*headref) || n < 0) return;
+		
+	Node* newNode = (Node*) malloc(sizeof(Node));
+	newNode->key = key;
+	Node* curr = *headref;
+	while(n > 1 && curr->next){
+		curr = curr->next;
+		n--;					
+	}
+	//Append to the end
+	Node* temp = curr->next;
+	curr->next = newNode;
+	newNode->next = temp;
+}
+
+//Function to split a list into two sublists
+//If odd number, extra node is put in front sublist
+void FrontBackSplit(Node* source,Node** frontref,Node** backref){
+	int linkLength = Length(source);
+	printf("linkLength: %d\n",linkLength);
+	int frontLength;
+	if(linkLength % 2 == 0) frontLength = linkLength/2;
+	else frontLength = linkLength/2 + 1;
+	int nodesMoved = 1;
+	Push(frontref,source->key);	
+	while(nodesMoved < frontLength){
+		source = source->next;
+		nodesMoved++;
+	}
+	//Merge to back sublist 
+	backref = &(source->next);
+	source->next = NULL;
+}
 
 //Prints out the linked list 
 void printList(Node* head){
@@ -125,13 +166,18 @@ int main(int argc,char* argv[]){
 	//insertSort(&head);
 	sortedInsert(&head,6);
 	insertSort(&head);
-	
 	printList(head);	
-	Node* bhead = BuildOneTwoThree();
-	Push(&bhead,82);
-	Append(&head,&bhead);
-	printList(head);
-	printList(bhead);
+	
+	Node* subA= NULL;
+	Node* subB= NULL;
+	//FrontBackSplit(head,&subA,&subB);
+
+	//printList(subA);	
+	//printList(subB);	
+	
+	insertNth(&head,45,6);
+	printf("--\n");	
+	printList(head);	
 	printf("Count = %d\n",count(head));
 	return 0;
 }
