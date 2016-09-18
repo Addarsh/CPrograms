@@ -116,6 +116,7 @@ bool checkForDuplicate(int key,int n,int* uniquearr){
 
 //Remove duplicates from a list
 //Traverse through list only once
+//List can be ordered/unordered, no restrictions
 void removeDuplicates(Node** headref){
 	int capacity = 3;
 	int* uniquearr = (int*)malloc(sizeof(int)*capacity);
@@ -214,6 +215,18 @@ void FrontBackSplit(Node* source,Node** frontref,Node** backref){
 	}
 }
 
+//Take the first node from b and push it
+//to the head of a
+void moveNode(Node** aref,Node** bref){
+	if(*bref == NULL) return;
+	Node* bfirst = *bref;
+	*bref = (*bref)->next;
+	int newkey = bfirst->key; 
+	free(bfirst);
+	Push(aref,newkey);
+}
+
+
 //Prints out the linked list 
 void printList(Node* head){
 	while(head){
@@ -243,6 +256,12 @@ int main(int argc,char* argv[]){
 	removeDuplicates(&head);
 	printf("Removing duplicates!\n");
 	printList(head);
+
+	Node* bhead = BuildOneTwoThree();
+	moveNode(&head,&bhead);
+	printf("After move noding\n");
+	printList(head);
+	printList(bhead);
 	printf("Count = %d\n",count(head));
 	return 0;
 }
