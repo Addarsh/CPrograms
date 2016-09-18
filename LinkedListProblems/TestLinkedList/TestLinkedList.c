@@ -133,7 +133,6 @@ void insertNth(Node** headref,int key, int n){
 //If odd number, extra node is put in front sublist
 void FrontBackSplit(Node* source,Node** frontref,Node** backref){
 	int linkLength = Length(source);
-	printf("linkLength: %d\n",linkLength);
 	int frontLength;
 	if(linkLength % 2 == 0) frontLength = linkLength/2;
 	else frontLength = linkLength/2 + 1;
@@ -141,11 +140,17 @@ void FrontBackSplit(Node* source,Node** frontref,Node** backref){
 	Push(frontref,source->key);	
 	while(nodesMoved < frontLength){
 		source = source->next;
+		insertNth(frontref,source->key,nodesMoved);
 		nodesMoved++;
 	}
-	//Merge to back sublist 
-	backref = &(source->next);
-	source->next = NULL;
+	//Add remaining nodes to blist
+	Node * curr = source->next;
+	int index = 0;
+	while(curr){
+		insertNth(backref,curr->key,index);
+		index++;		
+		curr = curr->next;
+	}
 }
 
 //Prints out the linked list 
@@ -159,24 +164,22 @@ void printList(Node* head){
 
 int main(int argc,char* argv[]){
 	Node* head =BuildOneTwoThree();
-	Push(&head,7);	
-	Push(&head,4);	
+	//Push(&head,7);	
+	//Push(&head,4);	
 	//printf("Popped elem: %d\n",Pop(&head));
 	//printf("Getting nth: n=%d, val=%d\n",1,getNth(head,1));
 	//insertSort(&head);
-	sortedInsert(&head,6);
+	//sortedInsert(&head,6);
 	insertSort(&head);
 	printList(head);	
 	
 	Node* subA= NULL;
 	Node* subB= NULL;
-	//FrontBackSplit(head,&subA,&subB);
+	FrontBackSplit(head,&subA,&subB);
 
-	//printList(subA);	
-	//printList(subB);	
+	printList(subA);	
+	printList(subB);	
 	
-	insertNth(&head,45,6);
-	printf("--\n");	
 	printList(head);	
 	printf("Count = %d\n",count(head));
 	return 0;
