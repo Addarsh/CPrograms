@@ -52,7 +52,7 @@ int getNth(Node* curr,int n){
 	return -1;
 }
 
-//Sorts a given linked
+//Sorts a given unsorted linked list
 void insertSort(Node** headref){
 	if(*headref == NULL) return;
 	//Make new list and delete old one
@@ -86,12 +86,20 @@ int Pop(Node** headref){
 	return temp->key;	
 }
 
+void myPush(Node** headref,int elem){
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	newNode->key = elem;
+	Push(headref,newNode);
+}
+
 int main(int argc,char* argv[]){
 	Node* head =BuildOneTwoThree();
-	Node* newNode = (Node*)malloc(sizeof(Node));
-	newNode->key = 0;
-	sortedInsert(&head,newNode);
-	printf("Popped elem: %d\n",Pop(&head));
+	myPush(&head,4);	
+	myPush(&head,5);	
+	//printf("Popped elem: %d\n",Pop(&head));
+	//printf("Getting nth: n=%d, val=%d\n",1,getNth(head,1));
+	insertSort(&head);
 	printf("Getting nth: n=%d, val=%d\n",1,getNth(head,1));
+	printf("Getting nth: n=%d, val=%d\n",5,getNth(head,5));
 	return 0;
-}	
+}
