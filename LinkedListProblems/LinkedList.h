@@ -7,5 +7,5 @@
 
 	Node* BuildOneTwoThree();
 	int Length(Node*);
-	void Push(Node**,Node*);
+	void Push(Node**,int);
 #endif

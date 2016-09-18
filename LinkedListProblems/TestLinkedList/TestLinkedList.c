@@ -4,12 +4,19 @@
 #include <stdlib.h>
 #include "../LinkedList.h"
 
+//Prototype function
+void printList(Node* head);
+
 //Insert a node in a sorted list
-void sortedInsert(Node** headref,Node* newNode){
+void sortedInsert(Node** headref,int key){
 	if(*headref == NULL){
-		Push(headref,newNode);
+		Push(headref,key);
 		return;
 	}
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	newNode->key = key;
+	newNode->next = NULL;
+
 	//Check if it appends in the beginning
 	if(newNode->key <= (*headref)->key){
 		newNode->next = (*headref);
@@ -27,8 +34,10 @@ void sortedInsert(Node** headref,Node* newNode){
 		}
 		curr = curr->next;	
 	}
+	
 	//Append to the end	
 	curr->next = newNode;
+	newNode->next= NULL;
 }
 
 //Get number of elements in the
@@ -56,13 +65,10 @@ int getNth(Node* curr,int n){
 void insertSort(Node** headref){
 	if(*headref == NULL) return;
 	//Make new list and delete old one
-	Node* newListHead;
-  Node* curr = *headref;
+	Node* newListHead = NULL;
 	while(*headref){
 		int key = Pop(headref);	
-		Node* newNode = (Node*) malloc(sizeof(Node));
-		newNode->key = key;
-		sortedInsert(&newListHead,newNode); //Insert in sorted list
+		sortedInsert(&newListHead,key); //Insert in sorted list
 	}
 	*headref = newListHead;
 }
@@ -80,26 +86,35 @@ void DeleteList(Node** headref){
 
 //Pop the first key of a linked list
 int Pop(Node** headref){
-	if(*headref == NULL) return;
+	int popkey = -1;
+	if(*headref == NULL) return popkey;
 	Node* temp = *headref;
+	popkey = temp->key;
 	*headref = (*headref)->next;
-	return temp->key;	
+	free(temp);
+	return popkey;	
 }
 
-void myPush(Node** headref,int elem){
-	Node* newNode = (Node*)malloc(sizeof(Node));
-	newNode->key = elem;
-	Push(headref,newNode);
+//Prints out the linked list 
+void printList(Node* head){
+	while(head){
+		printf("%d --> ",head->key);
+		head = head->next;
+	}
+	printf("NULL\n");
 }
 
 int main(int argc,char* argv[]){
 	Node* head =BuildOneTwoThree();
-	myPush(&head,4);	
-	myPush(&head,5);	
+	Push(&head,7);	
+	Push(&head,4);	
 	//printf("Popped elem: %d\n",Pop(&head));
 	//printf("Getting nth: n=%d, val=%d\n",1,getNth(head,1));
+	//insertSort(&head);
+	sortedInsert(&head,6);
 	insertSort(&head);
-	printf("Getting nth: n=%d, val=%d\n",1,getNth(head,1));
-	printf("Getting nth: n=%d, val=%d\n",5,getNth(head,5));
+	
+	printList(head);	
+	printf("Count = %d\n",count(head));
 	return 0;
 }

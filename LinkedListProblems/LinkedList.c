@@ -6,16 +6,10 @@
 //Builds a linked list of 3 nodes
 //The key values of the nodes are 1,2 and 3
 Node* BuildOneTwoThree(){
-	Node* one = (Node*) malloc(sizeof(Node));
-	Node* two = (Node*) malloc(sizeof(Node));
-	Node* three = (Node*) malloc(sizeof(Node));
-	one->key = 1;
-	two->key = 2;
-	three->key = 3;
 	Node* head = NULL;
-	Push(&head,three);
-	Push(&head,two);
-	Push(&head,one);
+	Push(&head,3);
+	Push(&head,2);
+	Push(&head,1);
 	return head;
 }
 
@@ -31,7 +25,11 @@ int Length(Node* head){
 }
 
 //Insert node at the head
-void Push(Node** headref,Node* newNode){	
+void Push(Node** headref,int key){
+	Node* newNode = (Node*)malloc(sizeof(Node));	
+	newNode->key = key;
+	newNode->next = NULL;
+
 	if(*headref == NULL){
 		*headref = newNode;
 		return;
