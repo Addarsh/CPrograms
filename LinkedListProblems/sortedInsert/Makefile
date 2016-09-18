@@ -2,5 +2,5 @@ C=gcc
 CFLAGS=-I.
 DEPS = ../LinkedList.h
 
-$(file): $(file).o ../LinkedList.o
-	$(CC) -o $(file) $(file).o ../LinkedList.o -I.
+TestLinkedList: TestLinkedList.o ../LinkedList.o
+	$(CC) -o TestLinkedList TestLinkedList.o ../LinkedList.o -I.
