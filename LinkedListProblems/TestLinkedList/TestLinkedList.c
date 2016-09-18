@@ -279,6 +279,28 @@ Node* ShuffleMerge(Node* a, Node* b){
 	return merged;
 }
 
+//Merge two lists that are already sorted
+Node* SortedMerge(Node** aref, Node** bref){
+	Node* merged = NULL;
+	while(*aref && *bref){
+		if((*aref)->key <= (*bref)->key){
+			moveNode(&merged,aref);
+		}else{
+			moveNode(&merged,bref);
+		}
+	}
+	while(*aref){
+		moveNode(&merged,aref);
+	}
+
+	while(*bref){
+		moveNode(&merged,bref);
+	}	
+
+	return merged;
+}
+
+
 //Prints out the linked list 
 void printList(Node* head){
 	while(head){
@@ -311,16 +333,17 @@ int main(int argc,char* argv[]){
 	Node* subB = NULL;
 	
 	AlternatingSplit(head,&subA,&subB);
-	printf("After alternating\n");
+	printf("After alternating and sorting\n");
+		
+	//After merging
+	insertSort(&subA);
+	insertSort(&subB);
 	printList(subA);
 	printList(subB);
+
 	
-	//After merging
-	Node* mergedhead = ShuffleMerge(subA, subB);
-	printf("After merging\n");
-	printList(mergedhead);
-	printf("head:\n");
-	printList(head);
-	printf("Count = %d\n",count(head));
+	printf("Merging sorted lists\n");
+	Node* merged = SortedMerge(&subA, &subB);
+	printList(merged);
 	return 0;
 }
