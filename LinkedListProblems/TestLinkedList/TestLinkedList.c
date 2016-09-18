@@ -161,6 +161,11 @@ int Pop(Node** headref){
 //Append linked list b to linked list a
 //Make head of linked list b NULL after
 void Append(Node** aref, Node** bref){
+	if(*aref == NULL) {
+		*aref = *bref;
+		*bref = NULL;
+		return;
+	}
 	Node* curr = *aref;
 	while(curr->next){
 		curr = curr->next;
@@ -241,6 +246,39 @@ void AlternatingSplit(Node* source,Node** aref,Node** bref){
 	}
 }
 
+//Take two sublists and merge onto a 
+// a combined list with alternating elements
+Node* ShuffleMerge(Node* a, Node* b){
+	Node* merged = NULL;
+	int n = 0;
+	while(a && b){
+		Node* newNode = (Node*)malloc(sizeof(Node));
+		if(n%2==0){
+			newNode->key = a->key;
+			newNode->next = NULL;
+			a = a->next;
+		}else{
+			newNode->key = b->key;
+			newNode->next = NULL;
+			b = b->next;	
+		}
+		Append(&merged,&newNode);
+		n++;
+	}
+	while(a){
+		insertNth(&merged,a->key,n);
+		n++;
+		a = a->next;
+	}
+
+	while(b){
+		insertNth(&merged,b->key,n);
+		n++;
+		b = b->next;
+	}
+	return merged;
+}
+
 //Prints out the linked list 
 void printList(Node* head){
 	while(head){
@@ -258,8 +296,6 @@ int main(int argc,char* argv[]){
 	
 	Push(&head,4);	
 	Push(&head,4);	
-	Push(&head,2);	
-	Push(&head,2);	
 	//printf("Popped elem: %d\n",Pop(&head));
 	//printf("Getting nth: n=%d, val=%d\n",1,getNth(head,1));
 	//insertSort(&head);
@@ -278,6 +314,13 @@ int main(int argc,char* argv[]){
 	printf("After alternating\n");
 	printList(subA);
 	printList(subB);
+	
+	//After merging
+	Node* mergedhead = ShuffleMerge(subA, subB);
+	printf("After merging\n");
+	printList(mergedhead);
+	printf("head:\n");
+	printList(head);
 	printf("Count = %d\n",count(head));
 	return 0;
 }
