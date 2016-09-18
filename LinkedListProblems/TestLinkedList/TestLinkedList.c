@@ -227,6 +227,20 @@ void moveNode(Node** aref,Node** bref){
 }
 
 
+//Alternating split
+//Take odd elements to one list, even to another
+void AlternatingSplit(Node* source,Node** aref,Node** bref){
+	int n=0;
+	while(source != NULL){
+		if(n%2 == 0){
+			moveNode(aref,&source);
+		} else{
+			moveNode(bref,&source);
+		}
+		n++;	
+	}
+}
+
 //Prints out the linked list 
 void printList(Node* head){
 	while(head){
@@ -257,11 +271,13 @@ int main(int argc,char* argv[]){
 	printf("Removing duplicates!\n");
 	printList(head);
 
-	Node* bhead = BuildOneTwoThree();
-	moveNode(&head,&bhead);
-	printf("After move noding\n");
-	printList(head);
-	printList(bhead);
+	Node* subA = NULL;
+	Node* subB = NULL;
+	
+	AlternatingSplit(head,&subA,&subB);
+	printf("After alternating\n");
+	printList(subA);
+	printList(subB);
 	printf("Count = %d\n",count(head));
 	return 0;
 }
