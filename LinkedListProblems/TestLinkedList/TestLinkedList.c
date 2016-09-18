@@ -2,6 +2,7 @@
 //insert in a linked list
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "LinkedList.h"
 
 //Prototype function
@@ -85,6 +86,66 @@ void DeleteList(Node** headref){
 	*headref = NULL;
 }
 
+//Check the array is full already
+void checkSize(int n,int* capacity,int* uniquearr){
+	if(n == *capacity){
+		int* temp = (int*) malloc(sizeof(int)*(*capacity));
+		int i;
+		for(i =0; i < n;i++) temp[i] = uniquearr[i];
+		*capacity = 2* (*capacity);
+		uniquearr = (int*)malloc(sizeof(int)*(*capacity));
+		for(i =0; i <n;i++)	uniquearr[i] = temp[i];
+	}
+}
+
+
+//Add new key element to the array
+void addToArr(int n, int key,int* uniquearr,int* capacity){
+	checkSize(n,capacity,uniquearr);
+	uniquearr[n] = key;
+}
+
+//Check if key element is a duplicate
+bool checkForDuplicate(int key,int n,int* uniquearr){
+	int i;
+	for(i =0; i <  n; i++){
+		if(uniquearr[i] == key) return true;			
+	}
+	return false;
+}
+
+//Remove duplicates from a list
+//Traverse through list only once
+void removeDuplicates(Node** headref){
+	int capacity = 3;
+	int* uniquearr = (int*)malloc(sizeof(int)*capacity);
+	int n =0;
+	Node* curr = *headref;
+	bool isRemoved = false;
+	while(curr->next != NULL){
+		if(!isRemoved){
+			//Add key from curr
+			addToArr(n,curr->key,uniquearr,&capacity);
+			n++;
+		}
+		//Check for duplicate from curr->next
+		if(checkForDuplicate(curr->next->key,n,uniquearr)){
+			//Delete curr->next
+			Node* after = curr->next->next;
+			Node* remove = curr->next;
+			free(remove);
+			curr->next = after;
+		
+			//Dont advance curr, recheck curr again
+			isRemoved = true;
+			continue;
+		}
+		isRemoved = false;
+		curr = curr->next;
+	}
+}
+
+
 //Pop the first key of a linked list
 int Pop(Node** headref){
 	int popkey = -1;
@@ -164,23 +225,24 @@ void printList(Node* head){
 
 int main(int argc,char* argv[]){
 	Node* head =BuildOneTwoThree();
-	//Push(&head,7);	
-	//Push(&head,4);	
+	insertNth(&head,3,3);
+	Push(&head,7);	
+	Push(&head,4);	
+	
+	Push(&head,4);	
+	Push(&head,4);	
+	Push(&head,2);	
+	Push(&head,2);	
 	//printf("Popped elem: %d\n",Pop(&head));
 	//printf("Getting nth: n=%d, val=%d\n",1,getNth(head,1));
 	//insertSort(&head);
 	//sortedInsert(&head,6);
-	insertSort(&head);
+	//insertSort(&head);
 	printList(head);	
 	
-	Node* subA= NULL;
-	Node* subB= NULL;
-	FrontBackSplit(head,&subA,&subB);
-
-	printList(subA);	
-	printList(subB);	
-	
-	printList(head);	
+	removeDuplicates(&head);
+	printf("Removing duplicates!\n");
+	printList(head);
 	printf("Count = %d\n",count(head));
 	return 0;
 }
