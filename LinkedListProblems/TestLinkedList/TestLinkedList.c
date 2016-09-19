@@ -146,7 +146,6 @@ void removeDuplicates(Node** headref){
 	}
 }
 
-
 //Pop the first key of a linked list
 int Pop(Node** headref){
 	int popkey = -1;
@@ -300,6 +299,24 @@ Node* SortedMerge(Node** aref, Node** bref){
 	return merged;
 }
 
+void MergeSort(Node** headref){
+	if(*headref == NULL) return;
+	if(Length(*headref) == 1) return;
+	if(Length(*headref) == 2){
+		insertSort(headref);
+		return;
+	}
+	Node* left = NULL;
+	Node* right = NULL;
+	//Split into two sublists	
+	FrontBackSplit(*headref,&left,&right);
+	MergeSort(&left);
+	MergeSort(&right);
+	
+	DeleteList(headref);
+	*headref = SortedMerge(&left,&right);
+	insertSort(headref);
+}
 
 //Prints out the linked list 
 void printList(Node* head){
@@ -344,6 +361,10 @@ int main(int argc,char* argv[]){
 	
 	printf("Merging sorted lists\n");
 	Node* merged = SortedMerge(&subA, &subB);
+	printList(merged);
+	
+	printf("Merging sorting\n");
+	MergeSort(&merged);
 	printList(merged);
 	return 0;
 }
