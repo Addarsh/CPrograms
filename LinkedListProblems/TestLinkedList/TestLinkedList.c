@@ -1,9 +1,13 @@
-//Function for performing sorted
-//insert in a linked list
+/*
+ * Code written in C to implement and test different functions 
+ * of a LinkedList.
+ * Author: Addarsh Chandrasekar
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "LinkedList.h"
+#include "LinkedList.h" //Header source includes struct Node definiton
+												//and a few elementary operations (Push,Length etc)
 
 //Prototype function
 void printList(Node* head);

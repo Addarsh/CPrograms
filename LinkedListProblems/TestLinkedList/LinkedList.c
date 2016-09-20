@@ -1,4 +1,4 @@
-//Source file for linked list
+//Source file for Linked List header
 #include <stdio.h>
 #include "LinkedList.h"
 #include <stdlib.h>
@@ -24,7 +24,7 @@ int Length(Node* head){
 	return count;
 }
 
-//Insert node at the head
+//Insert node at the head of the list
 void Push(Node** headref,int key){
 	Node* newNode = (Node*)malloc(sizeof(Node));	
 	newNode->key = key;
