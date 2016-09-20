@@ -6,10 +6,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "LinkedList.h" //Header source includes struct Node definiton
-												//and a few elementary operations (Push,Length etc)
 
-//Prototype function
+/* Header LinkedList.h includes struct Node definition
+ * and a few elementary operations (Push,Length etc)
+ */
+#include "LinkedList.h" 
+
+//Function prototype
 void printList(Node* head);
 
 //Insert a node in a sorted list

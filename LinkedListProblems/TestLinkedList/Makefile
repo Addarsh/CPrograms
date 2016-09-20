@@ -1,3 +1,6 @@
+#Makefile for project
+#Author: Addarsh Chandrasekar
+
 C=gcc
 CFLAGS=-I.
 DEPS = LinkedList.h

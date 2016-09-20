@@ -1,4 +1,9 @@
-//Source file for Linked List header
+/*
+ * Source file for Linked List.h
+ * Includes some elemental operations
+ * of linked lists
+ * Author: Addarsh Chandrasekar
+*/
 #include <stdio.h>
 #include "LinkedList.h"
 #include <stdlib.h>
